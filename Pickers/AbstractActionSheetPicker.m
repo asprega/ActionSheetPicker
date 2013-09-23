@@ -128,9 +128,8 @@
 #pragma mark - Actions
 
 - (void)showActionSheetPicker {
-    UIView *masterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.viewSize.width, 260)];    
+    UIView *masterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.viewSize.width, 260)];
     UIToolbar *pickerToolbar = [self createPickerToolbarWithTitle:self.title];
-    [pickerToolbar setBarStyle:UIBarStyleBlackTranslucent];
     [masterView addSubview:pickerToolbar];
     self.pickerView = [self configuredPickerView];
     NSAssert(_pickerView != NULL, @"Picker view failed to instantiate, perhaps you have invalid component data.");
@@ -195,12 +194,11 @@
 - (UIToolbar *)createPickerToolbarWithTitle:(NSString *)title  {
     CGRect frame = CGRectMake(0, 0, self.viewSize.width, 44);
     UIToolbar *pickerToolbar = [[UIToolbar alloc] initWithFrame:frame];
-    pickerToolbar.barStyle = UIBarStyleBlackOpaque;
+	pickerToolbar.barStyle = UIBarStyleBlackOpaque;
     NSMutableArray *barItems = [[NSMutableArray alloc] init];
     NSInteger index = 0;
     for (NSDictionary *buttonDetails in self.customButtons) {
         NSString *buttonTitle = [buttonDetails objectForKey:@"buttonTitle"];
-      //NSInteger buttonValue = [[buttonDetails objectForKey:@"buttonValue"] intValue];
         UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:buttonTitle style:UIBarButtonItemStyleBordered target:self action:@selector(customButtonPressed:)];
         button.tag = index;
         [barItems addObject:button];
@@ -227,7 +225,7 @@
     UILabel *toolBarItemlabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 180,30)];
     [toolBarItemlabel setTextAlignment:NSTextAlignmentCenter];
     [toolBarItemlabel setTextColor:[UIColor whiteColor]];
-	[toolBarItemlabel setShadowColor:[UIColor darkGrayColor]];
+	[toolBarItemlabel setShadowColor:[UIColor colorWithRed:0/255 green:0/255 blue:0/255 alpha:0.35f]];
 	[toolBarItemlabel setShadowOffset:CGSizeMake(0,-1)];
     [toolBarItemlabel setFont:_defaultFont ?: [UIFont boldSystemFontOfSize:16]];
     [toolBarItemlabel setBackgroundColor:[UIColor clearColor]];    
@@ -297,6 +295,12 @@
     [_actionSheet addSubview:aView];
     [self presentActionSheet:_actionSheet];
     _actionSheet.bounds = CGRectMake(0, 0, self.viewSize.width, sheetHeight);
+
+	// Make sure that the actionsheet frame size doesn't have decimal values (otherwise it will look blurry on iOS7)
+    _actionSheet.frame = CGRectMake((CGFloat)round(_actionSheet.frame.origin.x),
+							(CGFloat)round(_actionSheet.frame.origin.y),
+							(CGFloat)round(_actionSheet.frame.size.width),
+							(CGFloat)round(_actionSheet.frame.size.height));
 }
 
 - (void)presentActionSheet:(UIActionSheet *)actionSheet {
