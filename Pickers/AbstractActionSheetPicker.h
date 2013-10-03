@@ -31,6 +31,7 @@
 @interface AbstractActionSheetPicker : NSObject
 @property (nonatomic, copy) NSString *title;
 @property (nonatomic, strong) UIFont *defaultFont;
+@property (nonatomic, strong) UIToolbar *toolbar;
 @property (nonatomic, strong) UIView *pickerView;
 @property (nonatomic, readonly) CGSize viewSize;
 @property (nonatomic, strong) NSMutableArray *customButtons;
